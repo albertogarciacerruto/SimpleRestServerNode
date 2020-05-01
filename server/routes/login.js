@@ -19,7 +19,7 @@ app.post('/login', (req, res) => {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'Credenciales incorrectos'
+                    message: 'Credenciales incorrectos Usuario'
                 }
             });
         }
@@ -28,7 +28,7 @@ app.post('/login', (req, res) => {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'Credenciales incorrectos'
+                    message: 'Credenciales incorrectos Contrasena'
                 }
             });
         }
