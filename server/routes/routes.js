@@ -2,13 +2,15 @@ const express = require('express');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
-
+const { verifyToken, verifyAdminRole } = require('../middlewares/authentication');
 const app = express();
+
 // Para Consultar
-app.get('/user', function(req, res) {
+app.get('/user', verifyToken, function(req, res) {
+
+
     let desde = req.query.desde || 0;
     desde = Number(desde);
-
     let limite = req.query.limite || 5;
     limite = Number(limite);
     User.find({ status: true }, 'name, email, google, img, status, role')
@@ -32,7 +34,7 @@ app.get('/user', function(req, res) {
 });
 
 //Para Crear Nuevos Uusarios
-app.post('/user', function(req, res) {
+app.post('/user', [verifyToken, verifyAdminRole], function(req, res) {
     let body = req.body;
 
     let user = new User({
@@ -57,7 +59,7 @@ app.post('/user', function(req, res) {
 });
 
 //PUT ES PARA ACTUALIZAR
-app.put('/user/:id', function(req, res) {
+app.put('/user/:id', [verifyToken, verifyAdminRole], function(req, res) {
     let id = req.params.id;
     //let body = req.body;
     let body = _.pick(req.body, ['name', 'email', 'img', 'role', 'status']);
@@ -77,7 +79,7 @@ app.put('/user/:id', function(req, res) {
 
 });
 //DELETE ES PARA ELIMINAR
-app.delete('/user/:iden', function(req, res) {
+app.delete('/user/:iden', [verifyToken, verifyAdminRole], function(req, res) {
 
     let id = req.params.iden;
     /*User.findByIdAndRemove(id, (err, userDelete) => {
