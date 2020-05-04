@@ -8,7 +8,6 @@ const app = express();
 // Para Consultar
 app.get('/user', verifyToken, function(req, res) {
 
-
     let desde = req.query.desde || 0;
     desde = Number(desde);
     let limite = req.query.limite || 5;
